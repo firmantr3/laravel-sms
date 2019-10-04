@@ -47,7 +47,11 @@ use Firmantr3\Sms\Facade\Sms;
 Sms::text('test')->phone('081138702880')->send();
 
 // send using particular sms channel
-Sms::channel('zenziva')->text('test text zenziva')->phone('081138702880')->send();
+$sms = Sms::channel('zenziva')->text('test text zenziva')->phone('081138702880');
+$sms->send();
+
+// debug response data
+print_r($sms->getResponse());
 
 ```
 
