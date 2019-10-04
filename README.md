@@ -30,6 +30,10 @@ return [
 php artisan vendor:publish --provider=Firmantr3\\Sms\\SmsServiceProvider
 ```
 
+### Update Config
+
+Update your preferences in `config/sms.php`.
+
 ## Usage
 
 ### Sending Sms
@@ -39,7 +43,11 @@ php artisan vendor:publish --provider=Firmantr3\\Sms\\SmsServiceProvider
 
 use Firmantr3\Sms\Facade\Sms;
 
+// send using default sms channel
 Sms::text('test')->phone('081138702880')->send();
+
+// send using particular sms channel
+Sms::channel('zenziva')->text('test text zenziva')->phone('081138702880')->send();
 
 ```
 

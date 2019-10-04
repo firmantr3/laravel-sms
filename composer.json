@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Firmantr3\\Sms\\Providers\\SmsServiceProvider"
+                "Firmantr3\\Sms\\SmsServiceProvider"
             ]
         }
     }
