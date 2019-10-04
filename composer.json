@@ -1,0 +1,53 @@
+{
+    "name": "firmantr3/laravel-sms",
+    "description": "Third-party HTTP SMS Gateway library for Laravel. Support zenziva, nusasms, smsgateway[dot]me",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "sms",
+        "gateway",
+        "nusasms",
+        "zenziva",
+        "http",
+        "3rd-party",
+        "smsgateway.me"
+    ],
+    "require": {
+        "illuminate/container": "^5.0|^6.0",
+        "illuminate/contracts": "^5.0|^6.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "orchestra/testbench": "^4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Firman Taruna Nugraha",
+            "email": "firmantr3@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Firmantr3\\Sms\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Firmantr3\\Sms\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Firmantr3\\Sms\\Providers\\SmsServiceProvider"
+            ]
+        }
+    }
+}
