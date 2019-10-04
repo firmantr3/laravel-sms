@@ -3,6 +3,7 @@
 namespace Firmantr3\Sms\Test;
 
 use Firmantr3\Sms\Facade\Sms;
+use GuzzleHttp\Psr7\Response;
 
 class SmsTest extends TestCase {
 
@@ -32,6 +33,7 @@ class SmsTest extends TestCase {
         $this->assertIsObject($response);
         $this->assertEquals('-5', $response->results[0]->status);
         $this->assertEquals('6281138702880', $response->results[0]->destination);
+        $this->assertInstanceOf(Response::class, $sms->getResponse());
 
         $sms = Sms::text('test text 2')->phone('081138702880');
         $response = $sms->send();
@@ -47,6 +49,7 @@ class SmsTest extends TestCase {
         $this->assertIsObject($response);
         $this->assertEquals('-5', $response->results[0]->status);
         $this->assertEquals('6281138702880', $response->results[0]->destination);
+        $this->assertInstanceOf(Response::class, $sms->getResponse());
     }
     
 }

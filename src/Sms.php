@@ -4,6 +4,7 @@ namespace Firmantr3\Sms;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use Firmantr3\Sms\Exceptions\SmsException;
 use GuzzleHttp\Exception\RequestException;
 
@@ -31,6 +32,9 @@ class Sms
 
     /** @var bool */
     protected $isBulk;
+
+    /** @var Response */
+    protected $response;
 
     /**
      * Initialize
@@ -327,13 +331,13 @@ class Sms
         try {
             switch ($this->requestMethod()) {
                 case 'POST':
-                    $response = $client->request('POST', '', [
+                    $this->response = $client->request('POST', '', [
                         $this->config('payload_type') => $this->payload(),
                     ]);
                 break;
 
                 case 'GET':
-                    $response = $client->request('GET', '', [
+                    $this->response = $client->request('GET', '', [
                         'query' => $this->payload()
                     ]);
                 break;
@@ -350,10 +354,14 @@ class Sms
             return null;
         }
 
-        if (isset($response) && $response->getStatusCode() != 200) {
-            return null;
-        }
+        return json_decode($this->response->getBody()->getContents());
+    }
 
-        return json_decode($response->getBody()->getContents());
+    /**
+     * Get the value of response
+     */ 
+    public function getResponse()
+    {
+        return $this->response;
     }
 }
