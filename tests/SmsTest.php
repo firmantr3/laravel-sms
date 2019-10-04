@@ -32,6 +32,21 @@ class SmsTest extends TestCase {
         $this->assertIsObject($response);
         $this->assertEquals('-5', $response->results[0]->status);
         $this->assertEquals('6281138702880', $response->results[0]->destination);
+
+        $sms = Sms::text('test text 2')->phone('081138702880');
+        $response = $sms->send();
+
+        $this->assertEquals([
+            'user' => 'example_user',
+            'GSM' => '081138702880',
+            'SMSText' => 'test text 2',
+            'password' => 'secret',
+            'output' => 'json',
+        ], $sms->payload());
+
+        $this->assertIsObject($response);
+        $this->assertEquals('-5', $response->results[0]->status);
+        $this->assertEquals('6281138702880', $response->results[0]->destination);
     }
     
 }
