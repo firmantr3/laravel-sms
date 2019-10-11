@@ -47,7 +47,8 @@ class Sms
     }
 
     /** @return string */
-    protected function getChannelConfigKey() {
+    protected function getChannelConfigKey()
+    {
         return "sms.channels.{$this->channel}";
     }
 
@@ -60,7 +61,7 @@ class Sms
     {
         $config = config($this->getChannelConfigKey());
 
-        if($key !== null) {
+        if ($key !== null) {
             $key = ".{$key}";
         }
 
@@ -71,7 +72,8 @@ class Sms
         throw new SmsException('missing channel config!');
     }
 
-    protected function mergeConfigWithDefaults() {
+    protected function mergeConfigWithDefaults()
+    {
         config([
             $this->getChannelConfigKey() => array_merge(
                 [
@@ -127,12 +129,12 @@ class Sms
     public function payload()
     {
         if ($this->config('bulk')) {
-            if (! isset($this->bulkPayloads)) {
+            if (!isset($this->bulkPayloads)) {
                 $this->bulk([
-                    $this->config('payloads')
+                    $this->payloads
                 ]);
             }
-            
+
             $self = $this;
 
             return array_map(function ($data) use ($self) {
@@ -243,7 +245,7 @@ class Sms
      */
     public function bulk($params)
     {
-        $this->setOption('bulk', true);
+        $this->isBulk = true;
 
         $this->bulkPayloads = [];
         foreach ($params as $key => $value) {
@@ -261,7 +263,7 @@ class Sms
      */
     protected function mapPayload($payload)
     {
-        if (! $this->check($payload)) {
+        if (!$this->check($payload)) {
             return null;
         }
 
@@ -272,16 +274,16 @@ class Sms
                 case 'message':
                     $key = $this->messageKey();
                     unset($formattedPayload['message']);
-                break;
+                    break;
 
                 case 'phone':
                     $key = $this->phoneKey();
                     unset($formattedPayload['phone']);
-                break;
+                    break;
 
                 default:
 
-                break;
+                    break;
             }
 
             $formattedPayload[$key] = $value;
@@ -298,13 +300,13 @@ class Sms
      */
     protected function check($payload)
     {
-        if (!isset($payload['phone'])) {
+        if (!isset($this->payloads['phone'])) {
             throw new SmsException('missing message text');
 
             return false;
         }
 
-        if (!isset($payload['message'])) {
+        if (!isset($this->payloads['message'])) {
             throw new SmsException('missing phone number');
 
             return false;
@@ -334,16 +336,16 @@ class Sms
                     $this->response = $client->request('POST', '', [
                         $this->config('payload_type') => $this->payload(),
                     ]);
-                break;
+                    break;
 
                 case 'GET':
                     $this->response = $client->request('GET', '', [
                         'query' => $this->payload()
                     ]);
-                break;
+                    break;
 
                 default:
-                break;
+                    break;
             }
         } catch (RequestException $e) {
             throw new SmsException(json_encode([
@@ -359,7 +361,7 @@ class Sms
 
     /**
      * Get the value of response
-     */ 
+     */
     public function getResponse()
     {
         return $this->response;
